@@ -87,6 +87,44 @@ button {
   @apply px-2;
 }
 
+.modal-backdrop {
+  @apply fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4;
+  animation: fadeIn 240ms ease-out;
+}
+
+.modal-content {
+  @apply relative w-full max-w-5xl overflow-hidden rounded-3xl bg-basalt p-4 shadow-2xl;
+  animation: scaleIn 240ms ease-out;
+}
+
+.modal-image {
+  @apply h-auto max-h-[85vh] w-full rounded-[28px] object-contain;
+}
+
+.modal-close-button {
+  @apply absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-chalk/90 text-basalt shadow-panel transition hover:bg-chalk;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .architectural-grid {
   background-image:
     linear-gradient(rgba(244, 239, 228, 0.12) 1px, transparent 1px),

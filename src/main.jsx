@@ -383,7 +383,9 @@ function EnvironmentalAnalysisPage({ copy, data }) {
 
 function HousingLibraryPage({ copy, data }) {
   const [filter, setFilter] = useState(copy.library.filters[0]);
+  const [selectedImage, setSelectedImage] = useState(null);
   const models = filter === copy.library.filters[0] ? data.houseModels : data.houseModels.filter((model) => model.tags.includes(filter));
+
   return (
     <PageShell icon={Building2} eyebrow={copy.library.eyebrow} title={copy.library.title} intro={copy.library.intro}>
       <div className="flex flex-wrap gap-2">
@@ -395,10 +397,26 @@ function HousingLibraryPage({ copy, data }) {
       </div>
       <div className="mt-7 grid gap-5 lg:grid-cols-3">
         {models.map((model) => (
-          <ModelCard key={model.name} model={model} copy={copy} detailed />
+          <ModelCard key={model.name} model={model} copy={copy} detailed onImageClick={() => setSelectedImage(model)} />
         ))}
       </div>
+      {selectedImage && (
+        <ImageModal image={selectedImage.image} title={selectedImage.name} onClose={() => setSelectedImage(null)} />
+      )}
     </PageShell>
+  );
+}
+
+function ImageModal({ image, title, onClose }) {
+  return (
+    <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label={`Image de plein écran: ${title}`} onClick={onClose}>
+      <div className="modal-content" onClick={(event) => event.stopPropagation()}>
+        <button onClick={onClose} className="modal-close-button" aria-label="Fermer l'image">
+          ✕
+        </button>
+        <img src={image} alt={title} className="modal-image" />
+      </div>
+    </div>
   );
 }
 
@@ -572,15 +590,22 @@ function MaterialProfile({ copy, material }) {
   );
 }
 
-function ModelCard({ model, copy, detailed = false }) {
+function ModelCard({ model, copy, detailed = false, onImageClick }) {
   return (
     <article className="group overflow-hidden rounded bg-white shadow-line transition hover:-translate-y-1 hover:shadow-panel">
       <div className={`relative h-52 overflow-hidden bg-sand/10 ${model.visual}`}>
-        <img
-          src={model.image}
-          alt={`${model.name} photo`}
-          className="absolute inset-0 h-full w-full object-cover object-center transition duration-500 group-hover:scale-105"
-        />
+        <button
+          type="button"
+          onClick={onImageClick}
+          className="absolute inset-0 cursor-zoom-in focus:outline-none"
+          aria-label={`Ouvrir l'image ${model.name}`}
+        >
+          <img
+            src={model.image}
+            alt={`${model.name} photo`}
+            className="absolute inset-0 h-full w-full object-cover object-center transition duration-500 group-hover:scale-105"
+          />
+        </button>
         <div className="absolute left-4 top-4 rounded bg-white/90 px-3 py-1 text-xs font-semibold text-canopy">{model.climate}</div>
       </div>
       <div className="p-5">

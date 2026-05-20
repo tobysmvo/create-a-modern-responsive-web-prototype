@@ -402,6 +402,15 @@ function EnvironmentalAnalysisPage({ copy, data }) {
         </div>
       </div>
 
+      <div className="mt-8 grid gap-6 lg:grid-cols-4">
+        {Object.entries(analysis.indicators).map(([labelKey, value]) => (
+          <div key={labelKey} className="rounded bg-white p-4 shadow-line">
+            <p className="text-xs uppercase tracking-[0.16em] text-canopy/50">{copy.analysis.indicatorLabels[labelKey] || labelKey}</p>
+            <p className="mt-3 text-3xl font-semibold text-basalt">{value}</p>
+          </div>
+        ))}
+      </div>
+
       <ClimateMap copy={copy} points={data.mapPoints} />
     </PageShell>
   );

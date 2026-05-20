@@ -72,6 +72,7 @@ export const en = {
     observationsTitle: "Design observations",
     materialComparisonTitle: "Material comparison",
     materialComparisonText: "Compatibility notes and fit scores for selected materials.",
+    indicatorLabels: { thermal: "Thermal", carbon: "Carbon", resilience: "Resilience", adaptation: "Adaptation" },
     fields: {
       climate: "Climate type",
       region: "Geographic region",

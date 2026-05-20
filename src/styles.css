@@ -1,0 +1,211 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  background: #f4efe4;
+}
+
+button,
+select,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.section {
+  @apply mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8;
+}
+
+.section-title {
+  @apply mt-5 max-w-4xl font-display text-4xl font-semibold leading-tight tracking-tight text-basalt sm:text-5xl;
+}
+
+.primary-button,
+.secondary-button,
+.light-button,
+.ghost-button,
+.icon-button {
+  @apply inline-flex items-center gap-2 rounded font-semibold transition duration-300;
+}
+
+.primary-button {
+  @apply bg-canopy px-5 py-3 text-sm text-chalk hover:bg-basalt;
+}
+
+.secondary-button {
+  @apply bg-white px-5 py-3 text-sm text-canopy shadow-line hover:bg-sand/40;
+}
+
+.light-button {
+  @apply bg-chalk px-5 py-3 text-sm text-basalt hover:bg-sand;
+}
+
+.ghost-button {
+  @apply border border-white/20 px-5 py-3 text-sm text-white hover:bg-white/10;
+}
+
+.icon-button {
+  @apply grid h-10 w-10 place-items-center rounded bg-white text-canopy shadow-line hover:bg-sand/35;
+}
+
+.filter-chip {
+  @apply inline-flex items-center gap-2 rounded bg-white px-3 py-2 text-sm font-semibold text-canopy shadow-line transition hover:bg-sand/35;
+}
+
+.filter-chip-active {
+  @apply bg-canopy text-chalk hover:bg-canopy;
+}
+
+.language-switch {
+  @apply inline-flex rounded bg-white p-1 shadow-line;
+}
+
+.language-switch button {
+  @apply rounded px-3 py-2 text-xs font-bold tracking-[0.12em] text-canopy/55 transition hover:bg-sand/35 hover:text-canopy;
+}
+
+.language-switch .language-active {
+  @apply bg-canopy text-chalk hover:bg-canopy hover:text-chalk;
+}
+
+.language-switch-compact button {
+  @apply px-2;
+}
+
+.architectural-grid {
+  background-image:
+    linear-gradient(rgba(244, 239, 228, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(244, 239, 228, 0.12) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.roof-sketch {
+  background:
+    linear-gradient(135deg, transparent 42%, #243a32 43% 47%, transparent 48%),
+    linear-gradient(45deg, transparent 42%, #243a32 43% 47%, transparent 48%),
+    linear-gradient(90deg, #b97854 0 18%, transparent 18% 22%, #566b4f 22% 42%, transparent 42% 46%, #2f7274 46% 62%, transparent 62%),
+    #f4efe4;
+  background-size: 100% 55%, 100% 55%, 100% 100%, auto;
+  background-repeat: no-repeat;
+  background-position: top, top, bottom, center;
+}
+
+.visual-tropical,
+.visual-arid,
+.visual-mountain,
+.visual-coastal,
+.visual-urban,
+.visual-laterite,
+.case-mekong,
+.case-atlas,
+.case-nordic {
+  position: relative;
+  overflow: hidden;
+}
+
+.visual-tropical {
+  background:
+    linear-gradient(155deg, rgba(36, 58, 50, 0.84), rgba(47, 114, 116, 0.18)),
+    linear-gradient(25deg, #7a5a3a 0 18%, transparent 18%),
+    repeating-linear-gradient(90deg, transparent 0 20px, rgba(244, 239, 228, 0.35) 20px 24px),
+    #8aa17b;
+}
+
+.visual-arid {
+  background:
+    linear-gradient(145deg, rgba(122, 90, 58, 0.78), rgba(216, 195, 165, 0.26)),
+    repeating-linear-gradient(0deg, #b97854 0 20px, #d8c3a5 20px 38px);
+}
+
+.visual-mountain {
+  background:
+    linear-gradient(145deg, rgba(29, 36, 32, 0.82), rgba(86, 107, 79, 0.24)),
+    linear-gradient(135deg, transparent 0 48%, #f4efe4 49% 52%, transparent 53%),
+    #667460;
+}
+
+.visual-coastal {
+  background:
+    radial-gradient(circle at 70% 20%, rgba(244, 239, 228, 0.85), transparent 16%),
+    repeating-linear-gradient(160deg, rgba(47, 114, 116, 0.45) 0 10px, transparent 10px 24px),
+    #6d998d;
+}
+
+.visual-urban {
+  background:
+    linear-gradient(90deg, rgba(36, 58, 50, 0.86), rgba(36, 58, 50, 0.42)),
+    repeating-linear-gradient(90deg, #d8c3a5 0 34px, #f4efe4 34px 50px);
+}
+
+.visual-laterite {
+  background:
+    linear-gradient(145deg, rgba(189, 111, 68, 0.72), rgba(86, 107, 79, 0.22)),
+    repeating-linear-gradient(90deg, #9b583a 0 24px, #c8855c 24px 48px);
+}
+
+.case-mekong {
+  background:
+    linear-gradient(150deg, rgba(47, 114, 116, 0.76), rgba(244, 239, 228, 0.1)),
+    repeating-linear-gradient(90deg, transparent 0 28px, rgba(244, 239, 228, 0.55) 28px 32px),
+    #86a486;
+}
+
+.case-atlas {
+  background:
+    linear-gradient(150deg, rgba(122, 90, 58, 0.78), rgba(189, 111, 68, 0.16)),
+    repeating-linear-gradient(0deg, #c99663 0 28px, #d8c3a5 28px 54px);
+}
+
+.case-nordic {
+  background:
+    linear-gradient(150deg, rgba(29, 36, 32, 0.78), rgba(244, 239, 228, 0.16)),
+    repeating-linear-gradient(90deg, #8a9a88 0 22px, #d8c3a5 22px 34px);
+}
+
+.visual-tropical::after,
+.visual-arid::after,
+.visual-mountain::after,
+.visual-coastal::after,
+.visual-urban::after,
+.visual-laterite::after,
+.case-mekong::after,
+.case-atlas::after,
+.case-nordic::after {
+  content: "";
+  position: absolute;
+  inset: 28% 12% 0;
+  clip-path: polygon(0 55%, 42% 18%, 58% 18%, 100% 55%, 100% 100%, 0 100%);
+  background: rgba(244, 239, 228, 0.72);
+  border: 1px solid rgba(36, 58, 50, 0.16);
+}
+
+.bg-map {
+  background:
+    radial-gradient(circle at 20% 65%, rgba(47, 114, 116, 0.4), transparent 24%),
+    radial-gradient(circle at 48% 44%, rgba(189, 111, 68, 0.42), transparent 22%),
+    radial-gradient(circle at 70% 35%, rgba(86, 107, 79, 0.38), transparent 20%),
+    linear-gradient(120deg, #d8c3a5, #eef0dc 48%, #9fb9a5);
+}
+
+.map-lines {
+  background-image:
+    linear-gradient(rgba(36, 58, 50, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(36, 58, 50, 0.12) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+}

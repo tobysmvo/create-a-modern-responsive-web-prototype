@@ -183,9 +183,7 @@ export const en = {
         visual: "visual-tropical",
         image: "/assets/models/raised-ventilated-courtyard-house.jpg",
         media: [
-          { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Raised ventilated courtyard house" },
-          { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Shaded courtyard and elevated floor" },
-          { type: "video", provider: "vimeo", id: "76979871", title: "Passive ventilation case study" }
+          { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Raised ventilated courtyard house" }
         ],
         technical: [
           "Raised slab to limit humidity and flood risk.",
@@ -206,9 +204,7 @@ export const en = {
         visual: "visual-arid",
         image: "/assets/models/rammed-earth-thermal-mass-dwelling.jpg",
         media: [
-          { type: "image", src: "/assets/models/rammed-earth-thermal-mass-dwelling.jpg", alt: "Rammed earth thermal mass dwelling" },
-          { type: "image", src: "/assets/models/rammed-earth-thermal-mass-dwelling.jpg", alt: "Thick earth walls and compact plan" },
-          { type: "video", provider: "youtube", id: "5qap5aO4i9A", title: "Thermal mass building behavior" }
+          { type: "image", src: "/assets/models/rammed-earth-thermal-mass-dwelling.jpg", alt: "Rammed earth thermal mass dwelling" }
         ],
         technical: [
           "Thick rammed earth walls store heat and reduce cooling loads.",
@@ -229,9 +225,7 @@ export const en = {
         visual: "visual-mountain",
         image: "/assets/models/alpine-timber-stone-cluster.jpg",
         media: [
-          { type: "image", src: "/assets/models/alpine-timber-stone-cluster.jpg", alt: "Alpine timber-stone cluster" },
-          { type: "image", src: "/assets/models/alpine-timber-stone-cluster.jpg", alt: "Steep roof and compact cluster" },
-          { type: "video", provider: "vimeo", id: "22439234", title: "Cold climate timber architecture" }
+          { type: "image", src: "/assets/models/alpine-timber-stone-cluster.jpg", alt: "Alpine timber-stone cluster" }
         ],
         technical: [
           "Steep roof geometry protects against snow accumulation.",
@@ -252,9 +246,7 @@ export const en = {
         visual: "visual-coastal",
         image: "/assets/models/coastal-wind-buffer-row-house.jpg",
         media: [
-          { type: "image", src: "/assets/models/coastal-wind-buffer-row-house.jpg", alt: "Coastal wind-buffer row house" },
-          { type: "image", src: "/assets/models/coastal-wind-buffer-row-house.jpg", alt: "Screened patios and aerodynamic roofline" },
-          { type: "video", provider: "youtube", id: "hY7m5jjJ9mM", title: "Coastal architecture strategies" }
+          { type: "image", src: "/assets/models/coastal-wind-buffer-row-house.jpg", alt: "Coastal wind-buffer row house" }
         ],
         technical: [
           "Screened patios buffer salt-laden wind and direct sunlight.",
@@ -275,9 +267,7 @@ export const en = {
         visual: "visual-urban",
         image: "/assets/models/urban-low-carbon-infill-module.jpg",
         media: [
-          { type: "image", src: "/assets/models/urban-low-carbon-infill-module.jpg", alt: "Urban low-carbon infill module" },
-          { type: "image", src: "/assets/models/urban-low-carbon-infill-module.jpg", alt: "Compact modular timber housing" },
-          { type: "video", provider: "vimeo", id: "76979871", title: "Urban low-carbon design" }
+          { type: "image", src: "/assets/models/urban-low-carbon-infill-module.jpg", alt: "Urban low-carbon infill module" }
         ],
         technical: [
           "Prefabricated timber reduces construction waste and time.",
@@ -298,9 +288,7 @@ export const en = {
         visual: "visual-laterite",
         image: "/assets/models/laterite-courtyard-compound.jpg",
         media: [
-          { type: "image", src: "/assets/models/laterite-courtyard-compound.jpg", alt: "Laterite courtyard compound" },
-          { type: "image", src: "/assets/models/laterite-courtyard-compound.jpg", alt: "Shaded outdoor rooms and laterite walls" },
-          { type: "video", provider: "youtube", id: "5qap5aO4i9A", title: "Earthen architecture compound" }
+          { type: "image", src: "/assets/models/laterite-courtyard-compound.jpg", alt: "Laterite courtyard compound" }
         ],
         technical: [
           "Laterite load-bearing walls provide thermal mass and durability.",

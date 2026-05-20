@@ -150,7 +150,7 @@ export const fr = {
       phoneLabel: "Telephone",
       phone: "+33 605 609 687",
       locationLabel: "Localisation",
-      location: "2 rue Gérard Philipe, 51100, Reims, France"
+      location: "51100, Reims, France"
     }
   },
   data: {

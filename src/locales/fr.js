@@ -183,9 +183,7 @@ export const fr = {
         visual: "visual-tropical",
         image: "/assets/models/raised-ventilated-courtyard-house.jpg",
         media: [
-          { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Maison à cour surelevée et ventilée" },
-          { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Cour ombragée et plancher surélevé" },
-          { type: "video", provider: "vimeo", id: "76979871", title: "Étude de cas de ventilation passive" }
+          { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Maison à cour surelevée et ventilée" }
         ],
         technical: [
           "Dalle surélevée pour limiter l'humidité et le risque d'inondation.",
@@ -206,9 +204,8 @@ export const fr = {
         visual: "visual-arid",
         image: "/assets/models/rammed-earth-thermal-mass-dwelling.jpg",
        media: [
-  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Maison à cour surélevée et ventilée" },
-  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Cour ombragée et plancher surélevé" }
-],
+          { type: "image", src: "/assets/models/rammed-earth-thermal-mass-dwelling.jpg", alt: "Habitat en terre pisée à inertie thermique" }
+        ],
         technical: [
           "Murs épais en terre réduisent les besoins de refroidissement.",
           "Ouvertures protégées limitent les apports solaires en journée.",
@@ -228,9 +225,8 @@ export const fr = {
         visual: "visual-mountain",
         image: "/assets/models/alpine-timber-stone-cluster.jpg",
        media: [
-  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Maison à cour surélevée et ventilée" },
-  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Cour ombragée et plancher surélevé" }
-],
+          { type: "image", src: "/assets/models/alpine-timber-stone-cluster.jpg", alt: "Ensemble alpin bois-pierre" }
+        ],
         technical: [
           "Toit pentu protège contre l'accumulation de neige.",
           "Soubassement pierre et ossature bois gèrent l'humidité et les ponts thermiques.",
@@ -250,9 +246,8 @@ export const fr = {
         visual: "visual-coastal",
         image: "/assets/models/coastal-wind-buffer-row-house.jpg",
        media: [
-  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Maison à cour surélevée et ventilée" },
-  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Cour ombragée et plancher surélevé" }
-],
+          { type: "image", src: "/assets/models/coastal-wind-buffer-row-house.jpg", alt: "Maison côtière à tampon de vent" }
+        ],
         technical: [
           "Patios filtrant le vent salin et le soleil direct.",
           "Toit aérodynamique réduit les pressions de soulèvement.",
@@ -272,9 +267,8 @@ export const fr = {
         visual: "visual-urban",
         image: "/assets/models/urban-low-carbon-infill-module.jpg",
        media: [
-  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Maison à cour surélevée et ventilée" },
-  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Cour ombragée et plancher surélevé" }
-],
+          { type: "image", src: "/assets/models/urban-low-carbon-infill-module.jpg", alt: "Module urbain bas carbone" }
+        ],
         technical: [
           "Bois préfabriqué réduit les déchets et le temps de chantier.",
           "Toit végétalisé participe à la gestion des eaux pluviales.",
@@ -294,9 +288,8 @@ export const fr = {
         visual: "visual-laterite",
         image: "/assets/models/laterite-courtyard-compound.jpg",
         media: [
-  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Maison à cour surélevée et ventilée" },
-  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Cour ombragée et plancher surélevé" }
-],
+          { type: "image", src: "/assets/models/laterite-courtyard-compound.jpg", alt: "Concession à cour en latérite" }
+        ],
         technical: [
           "Murs porteurs en latérite apportent masse thermique et durabilité.",
           "Espaces ombragés prolongent les pièces de vie tout en limitant les gains solaires.",

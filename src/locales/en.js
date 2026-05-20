@@ -66,12 +66,19 @@ export const en = {
     adaptation: "Adaptation",
     aiLabel: "AI recommendation",
     climateMap: "Interactive climate map",
+    insightsTitle: "Key insights",
+    advantagesTitle: "Technical advantages",
+    limitsTitle: "Risks to monitor",
+    observationsTitle: "Design observations",
+    materialComparisonTitle: "Material comparison",
+    materialComparisonText: "Compatibility notes and fit scores for selected materials.",
     fields: {
       climate: "Climate type",
       region: "Geographic region",
       terrain: "Terrain type",
       culture: "Local culture",
-      materials: "Available local materials"
+      materials: "Available local materials",
+      method: "Preferred construction method"
     }
   },
   library: {
@@ -151,7 +158,8 @@ export const en = {
       region: "Coastal West Africa",
       terrain: "Lowland delta",
       culture: "Courtyard living",
-      materials: "Earth, bamboo, timber"
+      materials: "Earth, bamboo, timber",
+      method: "Passive cooling"
     },
     formOptions: {
       regions: ["Coastal West Africa", "Andean valley", "Mediterranean basin", "Southeast Asian floodplain"],

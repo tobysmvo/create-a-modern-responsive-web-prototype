@@ -36,6 +36,7 @@ import {
 import { en } from "./locales/en";
 import { fr } from "./locales/fr";
 import { createPrototypeData } from "./prototypeData";
+import { generateDynamicAnalysis } from "./analysisEngine";
 import "./styles.css";
 
 const locales = { fr, en };
@@ -329,16 +330,12 @@ function CaseStudies({ copy, data }) {
 }
 
 function EnvironmentalAnalysisPage({ copy, data }) {
-  const [form, setForm] = useState(data.defaultForm);
-  const recommendation = useMemo(() => {
-    const climate = form.climate.toLowerCase();
-    const key = climate.includes("arid") || climate.includes("aride") ? "arid" : climate.includes("mountain") || climate.includes("montagne") ? "mountain" : "tropical";
-    return data.recommendations[key];
-  }, [data.recommendations, form.climate]);
+  const [form, setForm] = useState({ ...data.defaultForm, method: data.constructionMethods[0]?.title || "" });
+  const analysis = useMemo(() => generateDynamicAnalysis(form, data, copy === fr ? "fr" : "en"), [form, data, copy]);
 
   return (
     <PageShell icon={ScanSearch} eyebrow={copy.analysis.eyebrow} title={copy.analysis.title} intro={copy.analysis.intro}>
-      <div className="grid gap-6 lg:grid-cols-[0.82fr_1.18fr]">
+      <div className="grid gap-6 lg:grid-cols-[0.78fr_1.22fr]">
         <div className="rounded bg-white p-5 shadow-line">
           <h3 className="font-display text-2xl font-semibold">{copy.analysis.siteInputs}</h3>
           <div className="mt-5 grid gap-4">
@@ -347,6 +344,7 @@ function EnvironmentalAnalysisPage({ copy, data }) {
             <Field label={copy.analysis.fields.terrain} value={form.terrain} options={data.formOptions.terrains} onChange={(terrain) => setForm({ ...form, terrain })} />
             <Field label={copy.analysis.fields.culture} value={form.culture} options={data.formOptions.cultures} onChange={(culture) => setForm({ ...form, culture })} />
             <Field label={copy.analysis.fields.materials} value={form.materials} options={data.formOptions.materials} onChange={(materials) => setForm({ ...form, materials })} />
+            <Field label={copy.analysis.fields.method} value={form.method} options={data.constructionMethods.map((method) => method.title)} onChange={(method) => setForm({ ...form, method })} />
           </div>
         </div>
 
@@ -354,16 +352,16 @@ function EnvironmentalAnalysisPage({ copy, data }) {
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sand">{copy.analysis.generatedBrief}</p>
-              <h3 className="mt-2 font-display text-3xl font-semibold">{recommendation.model}</h3>
+              <h3 className="mt-2 font-display text-3xl font-semibold">{analysis.title}</h3>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-sand/80">{analysis.subtitle}</p>
             </div>
-            <ScoreRing score={recommendation.score} label={copy.analysis.adaptation} />
+            <ScoreRing score={analysis.score} label={copy.analysis.adaptation} />
           </div>
           <div className="mt-6 grid gap-4 md:grid-cols-2">
-            {recommendation.blocks.map(({ title, value, icon: Icon }) => (
-              <div key={title} className="rounded border border-chalk/12 bg-chalk/7 p-4">
-                <Icon size={20} className="text-sand" />
-                <p className="mt-4 text-xs uppercase tracking-[0.18em] text-chalk/50">{title}</p>
-                <p className="mt-1 font-medium leading-6">{value}</p>
+            {analysis.blocks.map((block) => (
+              <div key={block.title} className="rounded border border-chalk/12 bg-chalk/7 p-4">
+                <p className="text-xs uppercase tracking-[0.18em] text-chalk/50">{block.title}</p>
+                <p className="mt-2 font-medium leading-6">{block.value}</p>
               </div>
             ))}
           </div>
@@ -372,10 +370,38 @@ function EnvironmentalAnalysisPage({ copy, data }) {
               <Sparkles size={18} />
               <span className="text-sm font-semibold">{copy.analysis.aiLabel}</span>
             </div>
-            <p className="mt-2 text-sm leading-6 text-chalk/78">{recommendation.ai}</p>
+            <p className="mt-2 text-sm leading-6 text-chalk/78">{analysis.detail}</p>
           </div>
         </div>
       </div>
+
+      <div className="mt-8 grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
+        <div className="rounded bg-white p-5 shadow-line">
+          <h3 className="font-display text-2xl font-semibold">{copy.analysis.insightsTitle}</h3>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            <InfoBlock title={copy.analysis.advantagesTitle} items={analysis.advantages} positive />
+            <InfoBlock title={copy.analysis.limitsTitle} items={analysis.limits} />
+            <InfoBlock title={copy.analysis.observationsTitle} items={analysis.observations} />
+          </div>
+        </div>
+
+        <div className="rounded bg-white p-5 shadow-line">
+          <h3 className="font-display text-2xl font-semibold">{copy.analysis.materialComparisonTitle}</h3>
+          <p className="mt-3 text-sm leading-6 text-canopy/72">{copy.analysis.materialComparisonText}</p>
+          <div className="mt-6 grid gap-4">
+            {analysis.materialInsights.map((material) => (
+              <div key={material.title} className="rounded border border-canopy/10 bg-chalk/10 p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <h4 className="font-semibold">{material.title}</h4>
+                  <span className="rounded-full bg-sand/15 px-3 py-1 text-xs font-semibold text-sand">{material.rating}</span>
+                </div>
+                <p className="mt-2 text-sm leading-6 text-canopy/75">{material.note}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <ClimateMap copy={copy} points={data.mapPoints} />
     </PageShell>
   );

@@ -171,6 +171,7 @@ export const en = {
         complexity: "Medium",
         energy: "A",
         visual: "visual-tropical",
+        image: "/assets/models/raised-ventilated-courtyard-house.jpg",
         description: "Elevated floor, shaded veranda and cross-ventilated rooms organized around a social courtyard."
       },
       {
@@ -183,6 +184,7 @@ export const en = {
         complexity: "Low",
         energy: "A-",
         visual: "visual-arid",
+        image: "/assets/models/rammed-earth-thermal-mass-dwelling.jpg",
         description: "Thick earth walls, compact plan and protected openings stabilize daily temperature swings."
       },
       {
@@ -195,6 +197,7 @@ export const en = {
         complexity: "High",
         energy: "B+",
         visual: "visual-mountain",
+        image: "/assets/models/alpine-timber-stone-cluster.jpg",
         description: "Steep roof, compact envelope and local stone plinth resist snow load and retain winter warmth."
       },
       {
@@ -207,6 +210,7 @@ export const en = {
         complexity: "Medium",
         energy: "B+",
         visual: "visual-coastal",
+        image: "/assets/models/coastal-wind-buffer-row-house.jpg",
         description: "Aerodynamic roofline, screened patios and corrosion-conscious detailing for salt-rich air."
       },
       {
@@ -219,6 +223,7 @@ export const en = {
         complexity: "Medium",
         energy: "A",
         visual: "visual-urban",
+        image: "/assets/models/urban-low-carbon-infill-module.jpg",
         description: "Compact modular housing using prefabricated timber, shared water systems and planted roofs."
       },
       {
@@ -231,6 +236,7 @@ export const en = {
         complexity: "Low",
         energy: "A-",
         visual: "visual-laterite",
+        image: "/assets/models/laterite-courtyard-compound.jpg",
         description: "Load-bearing laterite walls and shaded outdoor rooms support family compounds in hot climates."
       }
     ],

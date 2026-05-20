@@ -171,6 +171,7 @@ export const fr = {
         complexity: "Moyenne",
         energy: "A",
         visual: "visual-tropical",
+        image: "/assets/models/raised-ventilated-courtyard-house.jpg",
         description: "Plancher sureleve, veranda ombragee et pieces ventilees autour d'une cour sociale."
       },
       {
@@ -183,6 +184,7 @@ export const fr = {
         complexity: "Faible",
         energy: "A-",
         visual: "visual-arid",
+        image: "/assets/models/rammed-earth-thermal-mass-dwelling.jpg",
         description: "Murs epais, plan compact et ouvertures protegees stabilisent les ecarts de temperature."
       },
       {
@@ -195,6 +197,7 @@ export const fr = {
         complexity: "Elevee",
         energy: "B+",
         visual: "visual-mountain",
+        image: "/assets/models/alpine-timber-stone-cluster.jpg",
         description: "Toit pentu, enveloppe compacte et soubassement pierre contre la neige et le froid."
       },
       {
@@ -207,6 +210,7 @@ export const fr = {
         complexity: "Moyenne",
         energy: "B+",
         visual: "visual-coastal",
+        image: "/assets/models/coastal-wind-buffer-row-house.jpg",
         description: "Ligne de toit aerodynamique, patios filtres et details adaptes a l'air salin."
       },
       {
@@ -219,6 +223,7 @@ export const fr = {
         complexity: "Moyenne",
         energy: "A",
         visual: "visual-urban",
+        image: "/assets/models/urban-low-carbon-infill-module.jpg",
         description: "Habitat compact en bois prefabrique, gestion d'eau partagee et toiture plantee."
       },
       {
@@ -231,6 +236,7 @@ export const fr = {
         complexity: "Faible",
         energy: "A-",
         visual: "visual-laterite",
+        image: "/assets/models/laterite-courtyard-compound.jpg",
         description: "Murs porteurs en laterite et espaces exterieurs ombrages pour les climats chauds."
       }
     ],

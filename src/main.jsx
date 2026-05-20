@@ -575,7 +575,12 @@ function MaterialProfile({ copy, material }) {
 function ModelCard({ model, copy, detailed = false }) {
   return (
     <article className="group overflow-hidden rounded bg-white shadow-line transition hover:-translate-y-1 hover:shadow-panel">
-      <div className={`relative h-52 ${model.visual}`}>
+      <div className={`relative h-52 overflow-hidden bg-sand/10 ${model.visual}`}>
+        <img
+          src={model.image}
+          alt={`${model.name} photo`}
+          className="absolute inset-0 h-full w-full object-cover object-center transition duration-500 group-hover:scale-105"
+        />
         <div className="absolute left-4 top-4 rounded bg-white/90 px-3 py-1 text-xs font-semibold text-canopy">{model.climate}</div>
       </div>
       <div className="p-5">

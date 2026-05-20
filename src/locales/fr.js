@@ -87,13 +87,13 @@ export const fr = {
     title: "Comparer les modèles d'habitat par matériaux, complexité et performance.",
     intro:
       "Les cartes sont structurées pour les discussions de faisabilité entre concepteurs, ingénieurs et partenaires de construction locaux.",
-
     filters: ["Tous", "Climat tropical", "Climat aride", "Climat tempéré", "Environnement montagneux", "Environnement côtier", "Contexte urbain/rural"],
     stats: {
       durability: "Durabilité",
       complexity: "Complexité",
       efficiency: "Efficacité"
-    }
+    },
+    technicalLabel: "Description technique"
   },
   materials: {
     eyebrow: "Base de matériaux",
@@ -182,6 +182,16 @@ export const fr = {
         energy: "A",
         visual: "visual-tropical",
         image: "/assets/models/raised-ventilated-courtyard-house.jpg",
+        media: [
+          { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Maison à cour surelevée et ventilée" },
+          { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Cour ombragée et plancher surélevé" },
+          { type: "video", provider: "vimeo", id: "76979871", title: "Étude de cas de ventilation passive" }
+        ],
+        technical: [
+          "Dalle surélevée pour limiter l'humidité et le risque d'inondation.",
+          "Cour ombragée favorisant le rafraîchissement passif et la vie sociale.",
+          "Bambou et terre locaux réduisent le carbone incorporé."
+        ],
         description: "Plancher sureleve, veranda ombragee et pieces ventilees autour d'une cour sociale."
       },
       {
@@ -195,6 +205,15 @@ export const fr = {
         energy: "A-",
         visual: "visual-arid",
         image: "/assets/models/rammed-earth-thermal-mass-dwelling.jpg",
+       media: [
+  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Maison à cour surélevée et ventilée" },
+  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Cour ombragée et plancher surélevé" }
+],
+        technical: [
+          "Murs épais en terre réduisent les besoins de refroidissement.",
+          "Ouvertures protégées limitent les apports solaires en journée.",
+          "Forme compacte améliore la durabilité dans les climats arides."
+        ],
         description: "Murs epais, plan compact et ouvertures protegees stabilisent les ecarts de temperature."
       },
       {
@@ -208,6 +227,15 @@ export const fr = {
         energy: "B+",
         visual: "visual-mountain",
         image: "/assets/models/alpine-timber-stone-cluster.jpg",
+       media: [
+  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Maison à cour surélevée et ventilée" },
+  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Cour ombragée et plancher surélevé" }
+],
+        technical: [
+          "Toit pentu protège contre l'accumulation de neige.",
+          "Soubassement pierre et ossature bois gèrent l'humidité et les ponts thermiques.",
+          "Massing groupé crée des espaces extérieurs abrités."
+        ],
         description: "Toit pentu, enveloppe compacte et soubassement pierre contre la neige et le froid."
       },
       {
@@ -221,6 +249,15 @@ export const fr = {
         energy: "B+",
         visual: "visual-coastal",
         image: "/assets/models/coastal-wind-buffer-row-house.jpg",
+       media: [
+  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Maison à cour surélevée et ventilée" },
+  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Cour ombragée et plancher surélevé" }
+],
+        technical: [
+          "Patios filtrant le vent salin et le soleil direct.",
+          "Toit aérodynamique réduit les pressions de soulèvement.",
+          "Détails en acier recyclé limitent la corrosion en milieu humide."
+        ],
         description: "Ligne de toit aerodynamique, patios filtres et details adaptes a l'air salin."
       },
       {
@@ -234,6 +271,15 @@ export const fr = {
         energy: "A",
         visual: "visual-urban",
         image: "/assets/models/urban-low-carbon-infill-module.jpg",
+       media: [
+  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Maison à cour surélevée et ventilée" },
+  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Cour ombragée et plancher surélevé" }
+],
+        technical: [
+          "Bois préfabriqué réduit les déchets et le temps de chantier.",
+          "Toit végétalisé participe à la gestion des eaux pluviales.",
+          "Services partagés rendent le module efficace en milieu dense."
+        ],
         description: "Habitat compact en bois préfabriqué, gestion d'eau partagée et toiture plantée."
       },
       {
@@ -247,6 +293,15 @@ export const fr = {
         energy: "A-",
         visual: "visual-laterite",
         image: "/assets/models/laterite-courtyard-compound.jpg",
+        media: [
+  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Maison à cour surélevée et ventilée" },
+  { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Cour ombragée et plancher surélevé" }
+],
+        technical: [
+          "Murs porteurs en latérite apportent masse thermique et durabilité.",
+          "Espaces ombragés prolongent les pièces de vie tout en limitant les gains solaires.",
+          "Fibre de palmier et enduit terre améliorent la perméabilité des parois."
+        ],
         description: "Murs porteurs en latérite et espaces extérieurs ombragés pour les climats chauds."
       }
     ],

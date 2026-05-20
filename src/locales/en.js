@@ -92,7 +92,8 @@ export const en = {
       durability: "Durability",
       complexity: "Complexity",
       efficiency: "Efficiency"
-    }
+    },
+    technicalLabel: "Technical description"
   },
   materials: {
     eyebrow: "Materials database",
@@ -181,6 +182,16 @@ export const en = {
         energy: "A",
         visual: "visual-tropical",
         image: "/assets/models/raised-ventilated-courtyard-house.jpg",
+        media: [
+          { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Raised ventilated courtyard house" },
+          { type: "image", src: "/assets/models/raised-ventilated-courtyard-house.jpg", alt: "Shaded courtyard and elevated floor" },
+          { type: "video", provider: "vimeo", id: "76979871", title: "Passive ventilation case study" }
+        ],
+        technical: [
+          "Raised slab to limit humidity and flood risk.",
+          "Shaded courtyard supports passive cooling and social life.",
+          "Locally sourced bamboo and earth reduce embodied carbon."
+        ],
         description: "Elevated floor, shaded veranda and cross-ventilated rooms organized around a social courtyard."
       },
       {
@@ -194,6 +205,16 @@ export const en = {
         energy: "A-",
         visual: "visual-arid",
         image: "/assets/models/rammed-earth-thermal-mass-dwelling.jpg",
+        media: [
+          { type: "image", src: "/assets/models/rammed-earth-thermal-mass-dwelling.jpg", alt: "Rammed earth thermal mass dwelling" },
+          { type: "image", src: "/assets/models/rammed-earth-thermal-mass-dwelling.jpg", alt: "Thick earth walls and compact plan" },
+          { type: "video", provider: "youtube", id: "5qap5aO4i9A", title: "Thermal mass building behavior" }
+        ],
+        technical: [
+          "Thick rammed earth walls store heat and reduce cooling loads.",
+          "Protected openings limit solar gain during high daytime temperatures.",
+          "Simple compact form improves durability in arid conditions."
+        ],
         description: "Thick earth walls, compact plan and protected openings stabilize daily temperature swings."
       },
       {
@@ -207,6 +228,16 @@ export const en = {
         energy: "B+",
         visual: "visual-mountain",
         image: "/assets/models/alpine-timber-stone-cluster.jpg",
+        media: [
+          { type: "image", src: "/assets/models/alpine-timber-stone-cluster.jpg", alt: "Alpine timber-stone cluster" },
+          { type: "image", src: "/assets/models/alpine-timber-stone-cluster.jpg", alt: "Steep roof and compact cluster" },
+          { type: "video", provider: "vimeo", id: "22439234", title: "Cold climate timber architecture" }
+        ],
+        technical: [
+          "Steep roof geometry protects against snow accumulation.",
+          "Stone plinth and timber framing manage moisture and thermal bridging.",
+          "Clustered massing creates sheltered outdoor spaces."
+        ],
         description: "Steep roof, compact envelope and local stone plinth resist snow load and retain winter warmth."
       },
       {
@@ -220,6 +251,16 @@ export const en = {
         energy: "B+",
         visual: "visual-coastal",
         image: "/assets/models/coastal-wind-buffer-row-house.jpg",
+        media: [
+          { type: "image", src: "/assets/models/coastal-wind-buffer-row-house.jpg", alt: "Coastal wind-buffer row house" },
+          { type: "image", src: "/assets/models/coastal-wind-buffer-row-house.jpg", alt: "Screened patios and aerodynamic roofline" },
+          { type: "video", provider: "youtube", id: "hY7m5jjJ9mM", title: "Coastal architecture strategies" }
+        ],
+        technical: [
+          "Screened patios buffer salt-laden wind and direct sunlight.",
+          "Aerodynamic roof reduces uplift pressure on the envelope.",
+          "Recycled steel details minimize corrosion risk in humid air."
+        ],
         description: "Aerodynamic roofline, screened patios and corrosion-conscious detailing for salt-rich air."
       },
       {
@@ -233,6 +274,16 @@ export const en = {
         energy: "A",
         visual: "visual-urban",
         image: "/assets/models/urban-low-carbon-infill-module.jpg",
+        media: [
+          { type: "image", src: "/assets/models/urban-low-carbon-infill-module.jpg", alt: "Urban low-carbon infill module" },
+          { type: "image", src: "/assets/models/urban-low-carbon-infill-module.jpg", alt: "Compact modular timber housing" },
+          { type: "video", provider: "vimeo", id: "76979871", title: "Urban low-carbon design" }
+        ],
+        technical: [
+          "Prefabricated timber reduces construction waste and time.",
+          "Green roof contributes to stormwater management and insulation.",
+          "Shared services make the module efficient in dense urban areas."
+        ],
         description: "Compact modular housing using prefabricated timber, shared water systems and planted roofs."
       },
       {
@@ -246,6 +297,16 @@ export const en = {
         energy: "A-",
         visual: "visual-laterite",
         image: "/assets/models/laterite-courtyard-compound.jpg",
+        media: [
+          { type: "image", src: "/assets/models/laterite-courtyard-compound.jpg", alt: "Laterite courtyard compound" },
+          { type: "image", src: "/assets/models/laterite-courtyard-compound.jpg", alt: "Shaded outdoor rooms and laterite walls" },
+          { type: "video", provider: "youtube", id: "5qap5aO4i9A", title: "Earthen architecture compound" }
+        ],
+        technical: [
+          "Laterite load-bearing walls provide thermal mass and durability.",
+          "Shaded courtyard rooms extend living spaces while limiting solar gain.",
+          "Palm fiber infill and earth plaster improve wall breathability."
+        ],
         description: "Load-bearing laterite walls and shaded outdoor rooms support family compounds in hot climates."
       }
     ],

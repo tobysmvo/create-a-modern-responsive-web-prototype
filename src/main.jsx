@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   Activity,
@@ -7,6 +7,7 @@ import {
   Building2,
   Check,
   ChevronDown,
+  ChevronLeft,
   Compass,
   Database,
   Factory,
@@ -156,6 +157,8 @@ function LanguageSwitch({ label, language, setLanguage, compact = false }) {
 }
 
 function HomePage({ copy, data, setPage }) {
+  const [previewModel, setPreviewModel] = useState(null);
+
   return (
     <>
       <section className="relative overflow-hidden bg-basalt text-chalk">
@@ -183,7 +186,8 @@ function HomePage({ copy, data, setPage }) {
 
       <SearchPanel copy={copy} setPage={setPage} />
       <MissionSection copy={copy} />
-      <FeaturedModels copy={copy} data={data} setPage={setPage} />
+      <FeaturedModels copy={copy} data={data} setPage={setPage} onModelClick={setPreviewModel} />
+      {previewModel && <MediaGalleryModal model={previewModel} onClose={() => setPreviewModel(null)} />}
       <IntelligenceSections copy={copy} />
       <CaseStudies copy={copy} data={data} />
     </>
@@ -269,7 +273,7 @@ function MissionSection({ copy }) {
   );
 }
 
-function FeaturedModels({ copy, data, setPage }) {
+function FeaturedModels({ copy, data, setPage, onModelClick }) {
   return (
     <section className="section pt-4">
       <SectionHeader
@@ -280,7 +284,7 @@ function FeaturedModels({ copy, data, setPage }) {
       />
       <div className="mt-8 grid gap-5 lg:grid-cols-3">
         {data.houseModels.slice(0, 3).map((model) => (
-          <ModelCard key={model.name} model={model} copy={copy} />
+          <ModelCard key={model.name} model={model} copy={copy} onImageClick={() => onModelClick(model)} />
         ))}
       </div>
     </section>
@@ -418,7 +422,7 @@ function EnvironmentalAnalysisPage({ copy, data }) {
 
 function HousingLibraryPage({ copy, data }) {
   const [filter, setFilter] = useState(copy.library.filters[0]);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedModel, setSelectedModel] = useState(null);
   const models = filter === copy.library.filters[0] ? data.houseModels : data.houseModels.filter((model) => model.tags.includes(filter));
 
   return (
@@ -432,24 +436,119 @@ function HousingLibraryPage({ copy, data }) {
       </div>
       <div className="mt-7 grid gap-5 lg:grid-cols-3">
         {models.map((model) => (
-          <ModelCard key={model.name} model={model} copy={copy} detailed onImageClick={() => setSelectedImage(model)} />
+          <ModelCard key={model.name} model={model} copy={copy} detailed onImageClick={() => setSelectedModel(model)} />
         ))}
       </div>
-      {selectedImage && (
-        <ImageModal image={selectedImage.image} title={selectedImage.name} onClose={() => setSelectedImage(null)} />
-      )}
+      {selectedModel && <MediaGalleryModal model={selectedModel} onClose={() => setSelectedModel(null)} />}
     </PageShell>
   );
 }
 
-function ImageModal({ image, title, onClose }) {
+function MediaGalleryModal({ model, onClose }) {
+  const media = model.media?.length ? model.media : [{ type: "image", src: model.image, alt: model.name }];
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const currentMedia = media[currentIndex];
+  const total = media.length;
+
+  useEffect(() => {
+    function handleKey(event) {
+      if (event.key === "Escape") {
+        onClose();
+      }
+      if (event.key === "ArrowRight") {
+        setCurrentIndex((index) => (index + 1) % total);
+      }
+      if (event.key === "ArrowLeft") {
+        setCurrentIndex((index) => (index - 1 + total) % total);
+      }
+    }
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [onClose, total]);
+
+  function previous() {
+    setCurrentIndex((index) => (index - 1 + total) % total);
+  }
+
+  function next() {
+    setCurrentIndex((index) => (index + 1) % total);
+  }
+
+  const embedUrl =
+    currentMedia.type === "video"
+      ? currentMedia.provider === "youtube"
+        ? `https://www.youtube.com/embed/${currentMedia.id}?rel=0&modestbranding=1`
+        : `https://player.vimeo.com/video/${currentMedia.id}`
+      : null;
+
   return (
-    <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label={`Image de plein écran: ${title}`} onClick={onClose}>
-      <div className="modal-content" onClick={(event) => event.stopPropagation()}>
-        <button onClick={onClose} className="modal-close-button" aria-label="Fermer l'image">
+    <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label={`Galerie média: ${model.name}`} onClick={onClose}>
+      <div className="modal-content overflow-hidden p-0" onClick={(event) => event.stopPropagation()}>
+        <button onClick={onClose} className="modal-close-button" aria-label="Fermer la galerie">
           ✕
         </button>
-        <img src={image} alt={title} className="modal-image" />
+        <div className="relative bg-black">
+          {currentMedia.type === "image" ? (
+            <img src={currentMedia.src} alt={currentMedia.alt || model.name} className="media-gallery-media" />
+          ) : (
+            <div className="relative aspect-[16/9] w-full overflow-hidden bg-black">
+              <iframe
+                className="media-gallery-iframe"
+                title={currentMedia.title || model.name}
+                src={embedUrl}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          )}
+          <button type="button" className="gallery-nav-button left" onClick={(event) => { event.stopPropagation(); previous(); }} aria-label="Image précédente">
+            <ChevronLeft size={20} />
+          </button>
+          <button type="button" className="gallery-nav-button right" onClick={(event) => { event.stopPropagation(); next(); }} aria-label="Image suivante">
+            <ArrowRight size={20} />
+          </button>
+        </div>
+        <div className="p-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="text-xs uppercase tracking-[0.18em] text-sand/60">{model.climate}</p>
+              <h3 className="mt-2 font-display text-2xl font-semibold text-chalk">{model.name}</h3>
+            </div>
+            <span className="rounded-full bg-sand/10 px-3 py-1 text-xs uppercase tracking-[0.14em] text-sand">
+              {currentIndex + 1}/{total}
+            </span>
+          </div>
+          <p className="mt-3 text-sm leading-6 text-sand/80">{currentMedia.title || currentMedia.alt || model.description}</p>
+          {model.technical && (
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              {model.technical.map((note) => (
+                <div key={note} className="rounded-3xl bg-chalk/10 p-4 text-sm leading-6 text-sand">
+                  {note}
+                </div>
+              ))}
+            </div>
+          )}
+          <div className="gallery-thumbnails">
+            {media.map((item, index) => (
+              <button
+                key={`${item.type}-${item.src || item.id}-${index}`}
+                type="button"
+                onClick={() => setCurrentIndex(index)}
+                className={`gallery-thumb ${currentIndex === index ? "gallery-thumb-active" : "opacity-70 hover:opacity-100"}`}
+                aria-label={`Voir ${item.type} ${index + 1}`}
+              >
+                {item.type === "image" ? (
+                  <img src={item.src} alt={item.alt || model.name} className="h-full w-full rounded-xl object-cover" />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center rounded-xl bg-slate-900 text-xs uppercase tracking-[0.18em] text-chalk">
+                    {item.provider.toUpperCase()}
+                  </div>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -626,6 +725,10 @@ function MaterialProfile({ copy, material }) {
 }
 
 function ModelCard({ model, copy, detailed = false, onImageClick }) {
+  const cover = model.media?.[0] || { type: "image", src: model.image, alt: model.name };
+  const coverSrc = cover.type === "image" ? cover.src : model.image;
+  const coverAlt = cover.alt || model.name;
+
   return (
     <article className="group overflow-hidden rounded bg-white shadow-line transition hover:-translate-y-1 hover:shadow-panel">
       <div className={`relative h-52 overflow-hidden bg-sand/10 ${model.visual}`}>
@@ -633,11 +736,11 @@ function ModelCard({ model, copy, detailed = false, onImageClick }) {
           type="button"
           onClick={onImageClick}
           className="absolute inset-0 cursor-zoom-in focus:outline-none"
-          aria-label={`Ouvrir l'image ${model.name}`}
+          aria-label={`Ouvrir la galerie ${model.name}`}
         >
           <img
-            src={model.image}
-            alt={`${model.name} photo`}
+            src={coverSrc}
+            alt={coverAlt}
             className="absolute inset-0 h-full w-full object-cover object-center transition duration-500 group-hover:scale-105"
           />
         </button>
@@ -645,10 +748,12 @@ function ModelCard({ model, copy, detailed = false, onImageClick }) {
       </div>
       <div className="p-5">
         <div className="flex items-start justify-between gap-4">
-          <h3 className="font-display text-xl font-semibold">{model.name}</h3>
+          <div>
+            <h3 className="font-display text-xl font-semibold">{model.name}</h3>
+            <p className="mt-2 text-sm leading-6 text-canopy/70">{model.description}</p>
+          </div>
           <ScorePill score={model.score} />
         </div>
-        <p className="mt-3 text-sm leading-6 text-canopy/70">{model.description}</p>
         <div className="mt-4 flex flex-wrap gap-2">
           {model.materials.map((material) => (
             <span key={material} className="rounded bg-chalk px-3 py-1 text-xs font-medium text-canopy/72">
@@ -657,11 +762,23 @@ function ModelCard({ model, copy, detailed = false, onImageClick }) {
           ))}
         </div>
         {detailed && (
-          <div className="mt-5 grid grid-cols-3 gap-3">
-            <MiniStat label={copy.library.stats.durability} value={model.durability} />
-            <MiniStat label={copy.library.stats.complexity} value={model.complexity} />
-            <MiniStat label={copy.library.stats.efficiency} value={model.energy} />
-          </div>
+          <>
+            <div className="mt-5 grid grid-cols-3 gap-3">
+              <MiniStat label={copy.library.stats.durability} value={model.durability} />
+              <MiniStat label={copy.library.stats.complexity} value={model.complexity} />
+              <MiniStat label={copy.library.stats.efficiency} value={model.energy} />
+            </div>
+            {model.technical && (
+              <div className="mt-4 rounded-3xl bg-chalk/10 p-4 text-sm leading-6 text-canopy/75">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-canopy/70">{copy.library.technicalLabel}</p>
+                <ul className="mt-3 space-y-2 list-disc pl-5">
+                  {model.technical.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </>
         )}
       </div>
     </article>

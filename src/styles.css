@@ -105,6 +105,42 @@ button {
   @apply absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-chalk/90 text-basalt shadow-panel transition hover:bg-chalk;
 }
 
+.gallery-nav-button {
+  @apply absolute top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-chalk/90 text-basalt shadow-panel transition hover:bg-chalk;
+}
+
+.gallery-nav-button.left {
+  @apply left-3;
+}
+
+.gallery-nav-button.right {
+  @apply right-3;
+}
+
+.media-gallery-media {
+  @apply h-auto max-h-[70vh] w-full rounded-b-[28px] object-contain;
+}
+
+.media-gallery-iframe {
+  @apply h-full w-full;
+}
+
+.gallery-thumbnails {
+  @apply mt-5 flex gap-2 overflow-x-auto overflow-y-hidden px-1 pb-1;
+}
+
+.gallery-thumb {
+  @apply relative h-14 min-w-[5.5rem] overflow-hidden rounded-xl border border-white/10 bg-slate-900 text-left;
+}
+
+.gallery-thumb-active {
+  @apply border-canopy;
+}
+
+.gallery-thumb img {
+  @apply h-full w-full object-cover;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

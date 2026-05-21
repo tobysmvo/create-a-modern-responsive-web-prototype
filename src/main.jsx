@@ -38,6 +38,7 @@ import { en } from "./locales/en";
 import { fr } from "./locales/fr";
 import { createPrototypeData } from "./prototypeData";
 import { generateDynamicAnalysis } from "./analysisEngine";
+import ClimateMap from "./components/ClimateMap";
 import "./styles.css";
 
 const locales = { fr, en };
@@ -61,7 +62,13 @@ function App() {
     <div className="min-h-screen bg-chalk text-basalt">
       <TopNav copy={copy} language={language} setLanguage={setLanguage} page={page} setPage={setPage} />
       <main>
-        <Page key={language} copy={copy} data={data} setPage={setPage} />
+        <Page
+  key={language}
+  copy={copy}
+  data={data}
+  language={language}
+  setPage={setPage}
+/>
       </main>
       <Footer copy={copy} setPage={setPage} />
     </div>
@@ -333,7 +340,7 @@ function CaseStudies({ copy, data }) {
   );
 }
 
-function EnvironmentalAnalysisPage({ copy, data }) {
+function EnvironmentalAnalysisPage({ copy, data, language }) {
   const [form, setForm] = useState({ ...data.defaultForm, method: data.constructionMethods[0]?.title || "" });
   const analysis = useMemo(() => generateDynamicAnalysis(form, data, copy === fr ? "fr" : "en"), [form, data, copy]);
 
@@ -406,16 +413,7 @@ function EnvironmentalAnalysisPage({ copy, data }) {
         </div>
       </div>
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-4">
-        {Object.entries(analysis.indicators).map(([labelKey, value]) => (
-          <div key={labelKey} className="rounded bg-white p-4 shadow-line">
-            <p className="text-xs uppercase tracking-[0.16em] text-canopy/50">{copy.analysis.indicatorLabels[labelKey] || labelKey}</p>
-            <p className="mt-3 text-3xl font-semibold text-basalt">{value}</p>
-          </div>
-        ))}
-      </div>
-
-      <ClimateMap copy={copy} points={data.mapPoints} />
+      <ClimateMap copy={copy} data={data} language={language} />
     </PageShell>
   );
 }
@@ -673,28 +671,6 @@ function DashboardPage({ copy, data }) {
         ))}
       </div>
     </PageShell>
-  );
-}
-
-function ClimateMap({ copy, points }) {
-  const positions = ["left-[18%] top-[58%]", "left-[47%] top-[46%]", "left-[66%] top-[34%]", "left-[78%] top-[62%]"];
-  const colors = ["bg-lagoon", "bg-copper", "bg-moss", "bg-sand"];
-  return (
-    <div className="mt-8 rounded bg-white p-5 shadow-line">
-      <div className="flex items-center gap-3">
-        <Map className="text-moss" />
-        <h3 className="font-display text-2xl font-semibold">{copy.analysis.climateMap}</h3>
-      </div>
-      <div className="relative mt-5 h-80 overflow-hidden rounded bg-map">
-        <div className="absolute inset-0 map-lines" />
-        {points.map((label, index) => (
-          <div key={label} className={`absolute ${positions[index]}`}>
-            <div className={`h-4 w-4 rounded-full ${colors[index]} ring-4 ring-white/80`} />
-            <span className="mt-2 block rounded bg-white/90 px-3 py-1 text-xs font-semibold text-canopy shadow-line">{label}</span>
-          </div>
-        ))}
-      </div>
-    </div>
   );
 }
 

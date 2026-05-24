@@ -32,12 +32,14 @@ import {
   ThermometerSun,
   TreePine,
   UserRound,
-  Wind
+  Wind,
+  FileDown
 } from "lucide-react";
 import { en } from "./locales/en";
 import { fr } from "./locales/fr";
 import { createPrototypeData } from "./prototypeData";
 import { generateDynamicAnalysis } from "./analysisEngine";
+import { exportAnalysisPDF } from "./utils/exportPDF";
 import ClimateMap from "./components/ClimateMap";
 import "./styles.css";
 

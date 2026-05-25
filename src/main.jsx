@@ -11,6 +11,7 @@ import {
   Compass,
   Database,
   Factory,
+  FileDown,
   Filter,
   FlaskConical,
   Gauge,
@@ -32,8 +33,7 @@ import {
   ThermometerSun,
   TreePine,
   UserRound,
-  Wind,
-  FileDown
+  Wind
 } from "lucide-react";
 import { en } from "./locales/en";
 import { fr } from "./locales/fr";
@@ -46,7 +46,6 @@ import "./styles.css";
 const locales = { fr, en };
 
 function App() {
-  // Beginner-friendly i18n: one state value chooses one plain JavaScript text file.
   const [language, setLanguage] = useState("fr");
   const [page, setPage] = useState("home");
   const copy = locales[language];
@@ -64,13 +63,7 @@ function App() {
     <div className="min-h-screen bg-chalk text-basalt">
       <TopNav copy={copy} language={language} setLanguage={setLanguage} page={page} setPage={setPage} />
       <main>
-        <Page
-  key={language}
-  copy={copy}
-  data={data}
-  language={language}
-  setPage={setPage}
-/>
+        <Page key={language} copy={copy} data={data} language={language} setPage={setPage} />
       </main>
       <Footer copy={copy} setPage={setPage} />
     </div>
@@ -130,10 +123,7 @@ function TopNav({ copy, language, setLanguage, page, setPage }) {
             {copy.nav.map((item) => (
               <button
                 key={item.id}
-                onClick={() => {
-                  setPage(item.id);
-                  setOpen(false);
-                }}
+                onClick={() => { setPage(item.id); setOpen(false); }}
                 className={`rounded px-4 py-3 text-left text-sm font-medium ${
                   page === item.id ? "bg-canopy text-chalk" : "bg-white/55 text-canopy"
                 }`}
@@ -167,7 +157,6 @@ function LanguageSwitch({ label, language, setLanguage, compact = false }) {
 
 function HomePage({ copy, data, setPage }) {
   const [previewModel, setPreviewModel] = useState(null);
-
   return (
     <>
       <section className="relative overflow-hidden bg-basalt text-chalk">
@@ -192,7 +181,6 @@ function HomePage({ copy, data, setPage }) {
           <HeroBuilding copy={copy} />
         </div>
       </section>
-
       <SearchPanel copy={copy} setPage={setPage} />
       <MissionSection copy={copy} />
       <FeaturedModels copy={copy} data={data} setPage={setPage} onModelClick={setPreviewModel} />
@@ -342,25 +330,50 @@ function CaseStudies({ copy, data }) {
   );
 }
 
+// ── Page Analyse ─────────────────────────────────────────────
+// Modification : ajout du bouton "Exporter PDF" sous le ScoreRing
 function EnvironmentalAnalysisPage({ copy, data, language }) {
   const [form, setForm] = useState({ ...data.defaultForm, method: data.constructionMethods[0]?.title || "" });
-  const analysis = useMemo(() => generateDynamicAnalysis(form, data, copy === fr ? "fr" : "en"), [form, data, copy]);
+  const [exporting, setExporting] = useState(false);
+
+  const analysis = useMemo(
+    () => generateDynamicAnalysis(form, data, copy === fr ? "fr" : "en"),
+    [form, data, copy]
+  );
+
+  async function handleExport() {
+    setExporting(true);
+    try {
+      await exportAnalysisPDF(analysis, form, language);
+    } catch (err) {
+      console.error("Export PDF failed:", err);
+    } finally {
+      setExporting(false);
+    }
+  }
+
+  const exportLabel = language === "fr"
+    ? (exporting ? "Génération…" : "Exporter PDF")
+    : (exporting ? "Generating…" : "Export PDF");
 
   return (
     <PageShell icon={ScanSearch} eyebrow={copy.analysis.eyebrow} title={copy.analysis.title} intro={copy.analysis.intro}>
       <div className="grid gap-6 lg:grid-cols-[0.78fr_1.22fr]">
+
+        {/* Formulaire */}
         <div className="rounded bg-white p-5 shadow-line">
           <h3 className="font-display text-2xl font-semibold">{copy.analysis.siteInputs}</h3>
           <div className="mt-5 grid gap-4">
-            <Field label={copy.analysis.fields.climate} value={form.climate} options={data.climateOptions} onChange={(climate) => setForm({ ...form, climate })} />
-            <Field label={copy.analysis.fields.region} value={form.region} options={data.formOptions.regions} onChange={(region) => setForm({ ...form, region })} />
-            <Field label={copy.analysis.fields.terrain} value={form.terrain} options={data.formOptions.terrains} onChange={(terrain) => setForm({ ...form, terrain })} />
-            <Field label={copy.analysis.fields.culture} value={form.culture} options={data.formOptions.cultures} onChange={(culture) => setForm({ ...form, culture })} />
-            <Field label={copy.analysis.fields.materials} value={form.materials} options={data.formOptions.materials} onChange={(materials) => setForm({ ...form, materials })} />
-            <Field label={copy.analysis.fields.method} value={form.method} options={data.constructionMethods.map((method) => method.title)} onChange={(method) => setForm({ ...form, method })} />
+            <Field label={copy.analysis.fields.climate}   value={form.climate}   options={data.climateOptions}                         onChange={(v) => setForm({ ...form, climate: v })}   />
+            <Field label={copy.analysis.fields.region}    value={form.region}    options={data.formOptions.regions}                     onChange={(v) => setForm({ ...form, region: v })}    />
+            <Field label={copy.analysis.fields.terrain}   value={form.terrain}   options={data.formOptions.terrains}                    onChange={(v) => setForm({ ...form, terrain: v })}   />
+            <Field label={copy.analysis.fields.culture}   value={form.culture}   options={data.formOptions.cultures}                    onChange={(v) => setForm({ ...form, culture: v })}   />
+            <Field label={copy.analysis.fields.materials} value={form.materials} options={data.formOptions.materials}                   onChange={(v) => setForm({ ...form, materials: v })} />
+            <Field label={copy.analysis.fields.method}    value={form.method}    options={data.constructionMethods.map((m) => m.title)} onChange={(v) => setForm({ ...form, method: v })}    />
           </div>
         </div>
 
+        {/* Résultats */}
         <div className="rounded bg-basalt p-5 text-chalk shadow-panel">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
@@ -368,8 +381,21 @@ function EnvironmentalAnalysisPage({ copy, data, language }) {
               <h3 className="mt-2 font-display text-3xl font-semibold">{analysis.title}</h3>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-sand/80">{analysis.subtitle}</p>
             </div>
-            <ScoreRing score={analysis.score} label={copy.analysis.adaptation} />
+
+            {/* Score + bouton export */}
+            <div className="flex flex-col items-center gap-3">
+              <ScoreRing score={analysis.score} label={copy.analysis.adaptation} />
+              <button
+                onClick={handleExport}
+                disabled={exporting}
+                className="flex items-center gap-2 rounded border border-sand/30 bg-sand/10 px-4 py-2 text-sm font-semibold text-sand transition hover:bg-sand/20 hover:border-sand/60 disabled:opacity-50"
+              >
+                <FileDown size={15} />
+                {exportLabel}
+              </button>
+            </div>
           </div>
+
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             {analysis.blocks.map((block) => (
               <div key={block.title} className="rounded border border-chalk/12 bg-chalk/7 p-4">
@@ -378,6 +404,7 @@ function EnvironmentalAnalysisPage({ copy, data, language }) {
               </div>
             ))}
           </div>
+
           <div className="mt-5 rounded bg-sand/12 p-4">
             <div className="flex items-center gap-2 text-sand">
               <Sparkles size={18} />
@@ -392,9 +419,9 @@ function EnvironmentalAnalysisPage({ copy, data, language }) {
         <div className="rounded bg-white p-5 shadow-line">
           <h3 className="font-display text-2xl font-semibold">{copy.analysis.insightsTitle}</h3>
           <div className="mt-6 grid gap-4 md:grid-cols-3">
-            <InfoBlock title={copy.analysis.advantagesTitle} items={analysis.advantages} positive />
-            <InfoBlock title={copy.analysis.limitsTitle} items={analysis.limits} />
-            <InfoBlock title={copy.analysis.observationsTitle} items={analysis.observations} />
+            <InfoBlock title={copy.analysis.advantagesTitle}  items={analysis.advantages}   positive />
+            <InfoBlock title={copy.analysis.limitsTitle}       items={analysis.limits}                />
+            <InfoBlock title={copy.analysis.observationsTitle} items={analysis.observations}          />
           </div>
         </div>
 
@@ -423,7 +450,9 @@ function EnvironmentalAnalysisPage({ copy, data, language }) {
 function HousingLibraryPage({ copy, data }) {
   const [filter, setFilter] = useState(copy.library.filters[0]);
   const [selectedModel, setSelectedModel] = useState(null);
-  const models = filter === copy.library.filters[0] ? data.houseModels : data.houseModels.filter((model) => model.tags.includes(filter));
+  const models = filter === copy.library.filters[0]
+    ? data.houseModels
+    : data.houseModels.filter((model) => model.tags.includes(filter));
 
   return (
     <PageShell icon={Building2} eyebrow={copy.library.eyebrow} title={copy.library.title} intro={copy.library.intro}>
@@ -452,60 +481,37 @@ function MediaGalleryModal({ model, onClose }) {
 
   useEffect(() => {
     function handleKey(event) {
-      if (event.key === "Escape") {
-        onClose();
-      }
-      if (event.key === "ArrowRight") {
-        setCurrentIndex((index) => (index + 1) % total);
-      }
-      if (event.key === "ArrowLeft") {
-        setCurrentIndex((index) => (index - 1 + total) % total);
-      }
+      if (event.key === "Escape") onClose();
+      if (event.key === "ArrowRight") setCurrentIndex((i) => (i + 1) % total);
+      if (event.key === "ArrowLeft")  setCurrentIndex((i) => (i - 1 + total) % total);
     }
     document.addEventListener("keydown", handleKey);
     return () => document.removeEventListener("keydown", handleKey);
   }, [onClose, total]);
 
-  function previous() {
-    setCurrentIndex((index) => (index - 1 + total) % total);
-  }
-
-  function next() {
-    setCurrentIndex((index) => (index + 1) % total);
-  }
-
-  const embedUrl =
-    currentMedia.type === "video"
-      ? currentMedia.provider === "youtube"
-        ? `https://www.youtube.com/embed/${currentMedia.id}?rel=0&modestbranding=1`
-        : `https://player.vimeo.com/video/${currentMedia.id}`
-      : null;
+  const embedUrl = currentMedia.type === "video"
+    ? currentMedia.provider === "youtube"
+      ? `https://www.youtube.com/embed/${currentMedia.id}?rel=0&modestbranding=1`
+      : `https://player.vimeo.com/video/${currentMedia.id}`
+    : null;
 
   return (
-    <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label={`Galerie média: ${model.name}`} onClick={onClose}>
-      <div className="modal-content overflow-hidden p-0" onClick={(event) => event.stopPropagation()}>
-        <button onClick={onClose} className="modal-close-button" aria-label="Fermer la galerie">
-          ✕
-        </button>
+    <div className="modal-backdrop" role="dialog" aria-modal="true" onClick={onClose}>
+      <div className="modal-content overflow-hidden p-0" onClick={(e) => e.stopPropagation()}>
+        <button onClick={onClose} className="modal-close-button" aria-label="Fermer la galerie">✕</button>
         <div className="relative bg-black">
           {currentMedia.type === "image" ? (
             <img src={currentMedia.src} alt={currentMedia.alt || model.name} className="media-gallery-media" />
           ) : (
             <div className="relative aspect-[16/9] w-full overflow-hidden bg-black">
-              <iframe
-                className="media-gallery-iframe"
-                title={currentMedia.title || model.name}
-                src={embedUrl}
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+              <iframe className="media-gallery-iframe" title={currentMedia.title || model.name} src={embedUrl}
+                frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
             </div>
           )}
-          <button type="button" className="gallery-nav-button left" onClick={(event) => { event.stopPropagation(); previous(); }} aria-label="Image précédente">
+          <button type="button" className="gallery-nav-button left" onClick={(e) => { e.stopPropagation(); setCurrentIndex((i) => (i - 1 + total) % total); }} aria-label="Image précédente">
             <ChevronLeft size={20} />
           </button>
-          <button type="button" className="gallery-nav-button right" onClick={(event) => { event.stopPropagation(); next(); }} aria-label="Image suivante">
+          <button type="button" className="gallery-nav-button right" onClick={(e) => { e.stopPropagation(); setCurrentIndex((i) => (i + 1) % total); }} aria-label="Image suivante">
             <ArrowRight size={20} />
           </button>
         </div>
@@ -515,36 +521,23 @@ function MediaGalleryModal({ model, onClose }) {
               <p className="text-xs uppercase tracking-[0.18em] text-sand/60">{model.climate}</p>
               <h3 className="mt-2 font-display text-2xl font-semibold text-chalk">{model.name}</h3>
             </div>
-            <span className="rounded-full bg-sand/10 px-3 py-1 text-xs uppercase tracking-[0.14em] text-sand">
-              {currentIndex + 1}/{total}
-            </span>
+            <span className="rounded-full bg-sand/10 px-3 py-1 text-xs uppercase tracking-[0.14em] text-sand">{currentIndex + 1}/{total}</span>
           </div>
           <p className="mt-3 text-sm leading-6 text-sand/80">{currentMedia.title || currentMedia.alt || model.description}</p>
           {model.technical && (
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
               {model.technical.map((note) => (
-                <div key={note} className="rounded-3xl bg-chalk/10 p-4 text-sm leading-6 text-sand">
-                  {note}
-                </div>
+                <div key={note} className="rounded-3xl bg-chalk/10 p-4 text-sm leading-6 text-sand">{note}</div>
               ))}
             </div>
           )}
           <div className="gallery-thumbnails">
             {media.map((item, index) => (
-              <button
-                key={`${item.type}-${item.src || item.id}-${index}`}
-                type="button"
-                onClick={() => setCurrentIndex(index)}
-                className={`gallery-thumb ${currentIndex === index ? "gallery-thumb-active" : "opacity-70 hover:opacity-100"}`}
-                aria-label={`Voir ${item.type} ${index + 1}`}
-              >
-                {item.type === "image" ? (
-                  <img src={item.src} alt={item.alt || model.name} className="h-full w-full rounded-xl object-cover" />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center rounded-xl bg-slate-900 text-xs uppercase tracking-[0.18em] text-chalk">
-                    {item.provider.toUpperCase()}
-                  </div>
-                )}
+              <button key={`${item.type}-${item.src || item.id}-${index}`} type="button" onClick={() => setCurrentIndex(index)}
+                className={`gallery-thumb ${currentIndex === index ? "gallery-thumb-active" : "opacity-70 hover:opacity-100"}`}>
+                {item.type === "image"
+                  ? <img src={item.src} alt={item.alt || model.name} className="h-full w-full rounded-xl object-cover" />
+                  : <div className="flex h-full w-full items-center justify-center rounded-xl bg-slate-900 text-xs uppercase tracking-[0.18em] text-chalk">{item.provider.toUpperCase()}</div>}
               </button>
             ))}
           </div>
@@ -565,13 +558,10 @@ function MaterialsDatabasePage({ copy, data }) {
         <div className="rounded bg-white p-4 shadow-line">
           <div className="grid gap-2">
             {data.materials.map((material) => (
-              <button
-                key={material.name}
-                onClick={() => setSelected(material)}
+              <button key={material.name} onClick={() => setSelected(material)}
                 className={`flex items-center justify-between rounded px-4 py-3 text-left transition ${
                   selected.name === material.name ? "bg-canopy text-chalk" : "bg-chalk text-canopy hover:bg-sand/35"
-                }`}
-              >
+                }`}>
                 <span className="font-medium">{material.name}</span>
                 <span className="text-xs opacity-70">{material.impact}</span>
               </button>
@@ -588,11 +578,9 @@ function MaterialsDatabasePage({ copy, data }) {
           </div>
           <div className="flex flex-wrap gap-2">
             {data.materials.slice(0, 5).map((material) => (
-              <button
-                key={material.name}
-                onClick={() => setCompare((current) => (current.includes(material.name) ? current.filter((name) => name !== material.name) : [...current.slice(-1), material.name]))}
-                className={`filter-chip ${compare.includes(material.name) ? "filter-chip-active" : ""}`}
-              >
+              <button key={material.name}
+                onClick={() => setCompare((c) => c.includes(material.name) ? c.filter((n) => n !== material.name) : [...c.slice(-1), material.name])}
+                className={`filter-chip ${compare.includes(material.name) ? "filter-chip-active" : ""}`}>
                 {material.name}
               </button>
             ))}
@@ -602,9 +590,9 @@ function MaterialsDatabasePage({ copy, data }) {
           {comparison.map((material) => (
             <div key={material.name} className="rounded bg-chalk p-4">
               <h4 className="font-display text-xl font-semibold">{material.name}</h4>
-              <Bar label={copy.materials.labels.thermal} value={material.scores.thermal} />
+              <Bar label={copy.materials.labels.thermal}    value={material.scores.thermal}   />
               <Bar label={copy.materials.labels.structural} value={material.scores.structural} />
-              <Bar label={copy.materials.labels.lowCarbon} value={material.scores.carbon} />
+              <Bar label={copy.materials.labels.lowCarbon}  value={material.scores.carbon}    />
             </div>
           ))}
         </div>
@@ -650,9 +638,9 @@ function DashboardPage({ copy, data }) {
                   <p className="mt-1 text-sm text-canopy/65">{project.context}</p>
                 </div>
                 <div className="grid grid-cols-3 gap-3 text-center">
-                  <MiniStat label={copy.dashboard.stats[0]} value={project.carbon} />
+                  <MiniStat label={copy.dashboard.stats[0]} value={project.carbon}  />
                   <MiniStat label={copy.dashboard.stats[1]} value={project.comfort} />
-                  <MiniStat label={copy.dashboard.stats[2]} value={project.water} />
+                  <MiniStat label={copy.dashboard.stats[2]} value={project.water}   />
                 </div>
               </div>
             ))}
@@ -684,14 +672,12 @@ function MaterialProfile({ copy, material }) {
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-moss">{material.category}</p>
           <h3 className="mt-2 font-display text-3xl font-semibold">{material.name}</h3>
         </div>
-        <span className="rounded bg-moss/10 px-3 py-2 text-sm font-semibold text-moss">
-          {material.impact} {copy.materials.impactSuffix}
-        </span>
+        <span className="rounded bg-moss/10 px-3 py-2 text-sm font-semibold text-moss">{material.impact} {copy.materials.impactSuffix}</span>
       </div>
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <InfoBlock title={copy.materials.labels.advantages} items={material.advantages} positive />
         <InfoBlock title={copy.materials.labels.weaknesses} items={material.weaknesses} />
-        <InfoBlock title={copy.materials.labels.thermal} items={[material.thermal]} />
+        <InfoBlock title={copy.materials.labels.thermal}    items={[material.thermal]}  />
         <InfoBlock title={copy.materials.labels.structural} items={[material.structural]} />
       </div>
       <div className="mt-5 rounded bg-chalk p-4">
@@ -703,24 +689,15 @@ function MaterialProfile({ copy, material }) {
 }
 
 function ModelCard({ model, copy, detailed = false, onImageClick }) {
-  const cover = model.media?.[0] || { type: "image", src: model.image, alt: model.name };
+  const cover    = model.media?.[0] || { type: "image", src: model.image, alt: model.name };
   const coverSrc = cover.type === "image" ? cover.src : model.image;
   const coverAlt = cover.alt || model.name;
 
   return (
     <article className="group overflow-hidden rounded bg-white shadow-line transition hover:-translate-y-1 hover:shadow-panel">
       <div className={`relative h-52 overflow-hidden bg-sand/10 ${model.visual}`}>
-        <button
-          type="button"
-          onClick={onImageClick}
-          className="absolute inset-0 cursor-zoom-in focus:outline-none"
-          aria-label={`Ouvrir la galerie ${model.name}`}
-        >
-          <img
-            src={coverSrc}
-            alt={coverAlt}
-            className="absolute inset-0 h-full w-full object-cover object-center transition duration-500 group-hover:scale-105"
-          />
+        <button type="button" onClick={onImageClick} className="absolute inset-0 cursor-zoom-in focus:outline-none" aria-label={`Ouvrir la galerie ${model.name}`}>
+          <img src={coverSrc} alt={coverAlt} className="absolute inset-0 h-full w-full object-cover object-center transition duration-500 group-hover:scale-105" />
         </button>
         <div className="absolute left-4 top-4 rounded bg-white/90 px-3 py-1 text-xs font-semibold text-canopy">{model.climate}</div>
       </div>
@@ -734,9 +711,7 @@ function ModelCard({ model, copy, detailed = false, onImageClick }) {
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
           {model.materials.map((material) => (
-            <span key={material} className="rounded bg-chalk px-3 py-1 text-xs font-medium text-canopy/72">
-              {material}
-            </span>
+            <span key={material} className="rounded bg-chalk px-3 py-1 text-xs font-medium text-canopy/72">{material}</span>
           ))}
         </div>
         {detailed && (
@@ -744,15 +719,13 @@ function ModelCard({ model, copy, detailed = false, onImageClick }) {
             <div className="mt-5 grid grid-cols-3 gap-3">
               <MiniStat label={copy.library.stats.durability} value={model.durability} />
               <MiniStat label={copy.library.stats.complexity} value={model.complexity} />
-              <MiniStat label={copy.library.stats.efficiency} value={model.energy} />
+              <MiniStat label={copy.library.stats.efficiency} value={model.energy}     />
             </div>
             {model.technical && (
               <div className="mt-4 rounded-3xl bg-chalk/10 p-4 text-sm leading-6 text-canopy/75">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-canopy/70">{copy.library.technicalLabel}</p>
                 <ul className="mt-3 space-y-2 list-disc pl-5">
-                  {model.technical.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
+                  {model.technical.map((item) => <li key={item}>{item}</li>)}
                 </ul>
               </div>
             )}
@@ -784,9 +757,7 @@ function SectionHeader({ eyebrow, title, action, actionLabel }) {
         <h2 className="mt-3 max-w-3xl font-display text-4xl font-semibold tracking-tight text-basalt">{title}</h2>
       </div>
       {action && (
-        <button onClick={action} className="secondary-button">
-          {actionLabel} <ArrowRight size={17} />
-        </button>
+        <button onClick={action} className="secondary-button">{actionLabel} <ArrowRight size={17} /></button>
       )}
     </div>
   );
@@ -806,10 +777,8 @@ function Field({ label, value, options, onChange }) {
   return (
     <label className="block">
       <span className="text-sm font-semibold text-canopy/70">{label}</span>
-      <select value={value} onChange={(event) => onChange(event.target.value)} className="mt-2 w-full rounded border border-canopy/10 bg-chalk px-4 py-3 text-sm font-medium outline-none">
-        {options.map((option) => (
-          <option key={option}>{option}</option>
-        ))}
+      <select value={value} onChange={(e) => onChange(e.target.value)} className="mt-2 w-full rounded border border-canopy/10 bg-chalk px-4 py-3 text-sm font-medium outline-none">
+        {options.map((option) => <option key={option}>{option}</option>)}
       </select>
     </label>
   );
@@ -822,7 +791,9 @@ function InfoBlock({ title, items, positive = false }) {
       <div className="mt-3 space-y-2">
         {items.map((item) => (
           <p key={item} className="flex gap-2 text-sm leading-6 text-canopy/70">
-            {positive ? <Check size={16} className="mt-1 shrink-0 text-moss" /> : <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-copper" />}
+            {positive
+              ? <Check size={16} className="mt-1 shrink-0 text-moss" />
+              : <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-copper" />}
             {item}
           </p>
         ))}
@@ -877,7 +848,8 @@ function ScorePill({ score }) {
 function ScoreRing({ score, label }) {
   return (
     <div className="grid place-items-center">
-      <div className="grid h-28 w-28 place-items-center rounded-full" style={{ background: `conic-gradient(#d8c3a5 ${score * 3.6}deg, rgba(244,239,228,0.14) 0deg)` }}>
+      <div className="grid h-28 w-28 place-items-center rounded-full"
+        style={{ background: `conic-gradient(#d8c3a5 ${score * 3.6}deg, rgba(244,239,228,0.14) 0deg)` }}>
         <div className="grid h-20 w-20 place-items-center rounded-full bg-basalt">
           <span className="font-display text-2xl font-semibold">{score}</span>
         </div>
@@ -891,8 +863,7 @@ function Bar({ label, value }) {
   return (
     <div className="mt-4">
       <div className="flex justify-between text-xs font-semibold uppercase tracking-[0.12em] text-canopy/55">
-        <span>{label}</span>
-        <span>{value}%</span>
+        <span>{label}</span><span>{value}%</span>
       </div>
       <div className="mt-2 h-2 rounded bg-canopy/10">
         <div className="h-2 rounded bg-moss" style={{ width: `${value}%` }} />
@@ -915,9 +886,7 @@ function Footer({ copy, setPage }) {
       <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-[1.2fr_0.8fr_0.8fr]">
         <div>
           <div className="flex items-center gap-3">
-            <span className="grid h-10 w-10 place-items-center rounded bg-sand text-basalt">
-              <Layers3 size={20} />
-            </span>
+            <span className="grid h-10 w-10 place-items-center rounded bg-sand text-basalt"><Layers3 size={20} /></span>
             <span className="font-display text-xl font-semibold">{copy.brand.name}</span>
           </div>
           <p className="mt-4 max-w-md text-sm leading-6 text-chalk/65">{copy.footer.text}</p>
@@ -925,19 +894,17 @@ function Footer({ copy, setPage }) {
         <div>
           <p className="text-sm font-semibold text-sand">{copy.footer.resources}</p>
           <div className="mt-3 grid gap-2 text-sm text-chalk/65">
-            {copy.footer.links.map((item) => (
-              <span key={item}>{item}</span>
-            ))}
+            {copy.footer.links.map((item) => <span key={item}>{item}</span>)}
           </div>
         </div>
         <div>
           <p className="text-sm font-semibold text-sand">{copy.footer.contact}</p>
           <p className="mt-3 text-sm leading-6 text-chalk/65">{copy.footer.contactText}</p>
           <div className="mt-4 grid gap-3 text-sm text-chalk/75">
-            <ContactLine icon={UserRound} label={copy.footer.contactDetails.nameLabel} value={copy.footer.contactDetails.name} />
-            <ContactLine icon={Mail} label={copy.footer.contactDetails.emailLabel} value={copy.footer.contactDetails.email} href={`mailto:${copy.footer.contactDetails.email}`} />
-            <ContactLine icon={Phone} label={copy.footer.contactDetails.phoneLabel} value={copy.footer.contactDetails.phone} href="tel:+33605609687" />
-            <ContactLine icon={MapPin} label={copy.footer.contactDetails.locationLabel} value={copy.footer.contactDetails.location} />
+            <ContactLine icon={UserRound} label={copy.footer.contactDetails.nameLabel}     value={copy.footer.contactDetails.name}     />
+            <ContactLine icon={Mail}      label={copy.footer.contactDetails.emailLabel}    value={copy.footer.contactDetails.email}    href={`mailto:${copy.footer.contactDetails.email}`} />
+            <ContactLine icon={Phone}     label={copy.footer.contactDetails.phoneLabel}    value={copy.footer.contactDetails.phone}    href="tel:+33605609687" />
+            <ContactLine icon={MapPin}    label={copy.footer.contactDetails.locationLabel} value={copy.footer.contactDetails.location} />
           </div>
           <button onClick={() => setPage("dashboard")} className="mt-5 text-left text-xs font-semibold uppercase tracking-[0.16em] text-sand transition hover:text-chalk">
             {copy.footer.workspaceLink}
@@ -951,24 +918,16 @@ function Footer({ copy, setPage }) {
 function ContactLine({ icon: Icon, label, value, href }) {
   const content = (
     <>
-      <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded bg-chalk/8 text-sand">
-        <Icon size={16} />
-      </span>
+      <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded bg-chalk/8 text-sand"><Icon size={16} /></span>
       <span className="min-w-0">
         <span className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-chalk/40">{label}</span>
         <span className="mt-0.5 block break-words leading-6">{value}</span>
       </span>
     </>
   );
-
   if (href) {
-    return (
-      <a href={href} className="flex items-start gap-3 rounded p-2 transition hover:bg-chalk/10 hover:text-chalk">
-        {content}
-      </a>
-    );
+    return <a href={href} className="flex items-start gap-3 rounded p-2 transition hover:bg-chalk/10 hover:text-chalk">{content}</a>;
   }
-
   return <div className="flex items-start gap-3 rounded p-2">{content}</div>;
 }
 

@@ -803,4 +803,3 @@ export function generateDynamicAnalysis(form, data, language) {
       model?.name || (lang === "fr" ? "Modèle recommandé" : "Recommended model")
   };
 }
-
